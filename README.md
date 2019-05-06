@@ -1,5 +1,7 @@
 # Kui VSCode Extension
 
+> WARNING: This is a highly experimental prototype.
+
 This repository provides a VSCode extension for [Kui](https://github.com/IBM/kui).
 
 ## Development Guide
