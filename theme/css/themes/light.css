@@ -1,0 +1,64 @@
+/* color variables */
+body[kui-theme="Light"] {
+    --color-base00: #152934;
+    --color-base01: #f5f7fa;
+    --color-base02: #8c9ba5;
+    --color-base03: #f0f3f6;
+    --color-base04: #dfe3e6;
+    --color-base05: var(--color-base00);
+    --color-base06: var(--color-base01);
+    --color-base07: #fff;
+    --color-base08: #e71d32;
+    --color-base09: #bf5b17;
+    --color-base0A: hsl(48, 100%, 38%);
+    --color-base0B: #5aa700;
+    --color-base0C: #00b4a0;
+    --color-base0D: #3d70b2;
+    --color-base0E: #beaed4;
+    --color-base0F: hsla(265, 31%, 50%, 1);
+    
+    --color-text-01: var(--color-base00);
+    --color-text-02: #5a6872;
+
+    --color-light-red: rgba(231, 29, 50, 0.75);
+    --color-light-green: rgba(97, 164, 38, 0.75);
+    --color-light-yellow: #efc100;
+
+    --color-hover-primary-text: #294c86;
+    --color-content-divider: #4173AF;
+    --color-tag-beta-fill: #dfe3e6;
+    --color-tag-beta-text: #394b54;
+    --color-tag-ibm-fill: #c0e6ff;
+    --color-tag-ibm-text: #325c80;
+    --color-stripe-01: #152935; /* 202 60 21 */
+    --color-stripe-02: #0f212e; /* 205 67 18 */
+    --color-text-against-dark-bg: var(--color-ui-02);
+    --color-support-01: var(--color-red);
+    --color-support-01-lighter: var(--color-light-red);
+    --color-support-02: var(--color-green);
+    --color-support-03: var(--color-light-yellow);
+    --color-support-03-darker: var(--color-yellow);  /* dialed down from 47% lightness */
+    --color-support-04: #5aaafa;
+    --color-brand-01-10: hsla(214, 49%, 47%, 0.1); /* 10% opacity */
+    --color-brand-02: #5596e6;
+    --color-ui-01: var(--color-base07);
+    --color-ui-04: var(--color-light-gray); /* 206 3 90 */
+    --color-ui-05: var(--color-dark-gray); /* 204 15 65 */
+
+    --color-black: var(--color-base07);
+    --color-white: var(--color-base00);
+
+    --color-scrollbar-thumb: #7A7B7D;
+    --color-scrollbar-thumb-border: #A8AAAC;
+    --color-scrollbar-thumb-outline: #FEFFFF;
+
+    --color-selection-background: rgba(140, 155, 165, 0.40); /* color-ui-05 at reduced alpha */
+
+    --color-carbon-components-h3: #3057d5;
+
+    --color-ui-06: #f4f7fb; /* nick made up this signifier, it's not from carbon-components */
+    --color-field-01: #f4f7fb;
+}
+
+/* mono-blue hightlightjs theme */
+.hljs{display:block;overflow-x:auto;padding:0.5em;background:#eaeef3}.hljs{color:#00193a}.hljs-keyword,.hljs-selector-tag,.hljs-title,.hljs-section,.hljs-doctag,.hljs-name,.hljs-strong{font-weight:bold}.hljs-comment{color:#738191}.hljs-string,.hljs-title,.hljs-section,.hljs-built_in,.hljs-literal,.hljs-params,.hljs-type,.hljs-addition,.hljs-tag,.hljs-quote,.hljs-name,.hljs-selector-id,.hljs-selector-class{color:#0048ab}.hljs-meta,.hljs-subst,.hljs-symbol,.hljs-regexp,.hljs-attribute,.hljs-deletion,.hljs-variable,.hljs-template-variable,.hljs-link,.hljs-bullet{color:#4c81c9}.hljs-emphasis{font-style:italic}

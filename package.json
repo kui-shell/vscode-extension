@@ -1,0 +1,57 @@
+{
+  "name": "@kui-shell/vscode-extension",
+  "displayName": "kui",
+  "description": "Kui Shell",
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.33.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onCommand:extension.kui"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "extension.kui",
+        "title": "Kui"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "build:kui:webpack": "WEB_COMPRESS=none NO_DOCKER=true kui-build-webpack",
+    "build:kui": "npx kui-compile && if [ ! -f dist/webpack/index.html ]; then npm run -s build:kui:webpack; fi;",
+    "postinstall": "if [ -f ./node_modules/vscode/bin/install ]; then node ./node_modules/vscode/bin/install && npm run -s build:headless && npm run build:kui; fi",
+    "test": "npm run compile && node ./node_modules/vscode/bin/test"
+  },
+  "devDependencies": {
+    "@kui-shell/builder": "^0.29.0",
+    "@kui-shell/proxy": "^0.29.0",
+    "@types/mocha": "^5.2.6",
+    "@types/node": "^12.0.0",
+    "tslint": "^5.16.0",
+    "typescript": "^3.4.5",
+    "vscode": "^1.1.33"
+  },
+  "dependencies": {
+    "@kui-shell/core": "^2.29.0",
+    "@kui-shell/plugin-apache-composer": "^0.34.0",
+    "@kui-shell/plugin-bash-like": "^0.18.0",
+    "@kui-shell/plugin-core-support": "^0.29.0",
+    "@kui-shell/plugin-editor": "^0.18.0",
+    "@kui-shell/plugin-grid": "^0.18.0",
+    "@kui-shell/plugin-k8s": "^0.29.0",
+    "@kui-shell/plugin-openwhisk": "^0.29.0",
+    "@kui-shell/plugin-proxy-support": "^0.29.0",
+    "@kui-shell/plugin-sample": "file:build/plugins/plugin-sample/src",
+    "@kui-shell/plugin-tutorials": "^0.29.0",
+    "@kui-shell/plugin-wrk": "^0.15.0",
+    "@kui-shell/plugin-wskflow": "^0.18.0"
+  }
+}

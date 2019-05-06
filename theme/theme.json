@@ -1,0 +1,40 @@
+{
+  "productName": "Kui",
+  "productTitle": "Kui Shell",
+  "ogSiteName": "Kui Shell",
+  "ogTitle": "Kui Shell: The Hybrid CLI Cloud Shell",
+  "ogUrl": "https://hello.kui-shell.org",
+  "ogDescription": "**Kui** offers a new development experience for building cloud-native applications. By combining the power of familiar CLIs with **visualizations** in high-impact areas, Kui enables you to manipulate complex **JSON and YAML** data models, integrate disparate tooling, and provides quick access to aggregate views of **operational data**.",
+  "ogImage": "http://content.kui-shell.org/images/ogImage.jpg",
+  "ogLabel1": "Clone on GitHub",
+  "ogData1": "https://github.com/IBM/kui",
+  "ogLabel2": "Download Now",
+  "ogData2": "https://tarball.kui-shell.org",
+  "companyName": "",
+  "productSubName": "Kui",
+  "shellName": "Shell",
+  "userAgent": "Kui-Shell",
+  "highlightTheme": "mono-blue",
+  "defaultTheme": "Light",
+  "themes": [
+    { "name": "Light", "css": "themes/light.css", "description": "Default Light", "style": "light" },
+    { "name": "Dark", "css": "themes/dark.css", "description": "Default Dark", "style": "dark" },
+    { "name": "Atelier", "css": "themes/atelier-seaside.css", "style": "dark" },
+    { "name": "Dracula", "css": "themes/dracula.css", "style": "dark" },
+    { "name": "Gruvbox", "css": "themes/gruvbox-dark-medium.css", "style": "dark" },
+    { "name": "Lucario", "css": "themes/lucario.css", "style": "dark" },
+    { "name": "Monokai", "css": "themes/monokai.css", "style": "dark" },
+    { "name": "Nord", "css": "themes/nord.css", "style": "dark" },
+    { "name": "Paraiso", "css": "themes/paraiso.css", "style": "dark" },
+    { "name": "Solarized", "css": "themes/solarized-dark.css", "style": "dark" }
+  ],
+  "fonts": "https://fonts.googleapis.com/css?family=Roboto+Mono:400,500,700|IBM+Plex+Sans:300,400,600",
+  "appIcon": "icons/png/kui.png",
+  "largeIcon": "icons/svg/kui.svg",
+  "favicon": "icons/ico/kui.ico",
+  "filesystemIcons": {
+    "darwin": "icons/icns/kui.icns",
+    "win32": "icons/ico/kui.ico",
+    "linux": "icons/png/kui.png"
+  }
+}
