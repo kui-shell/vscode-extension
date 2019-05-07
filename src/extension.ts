@@ -10,6 +10,11 @@ process.env.KUI_REPL_MODE = 'true';
 import { main as KuiMain } from '@kui-shell/core';
 import { setValidCredentials } from '@kui-shell/core/core/capabilities';
 
+// pty support
+import { onConnection, disableBashSessions } from '@kui-shell/plugin-bash-like/pty/server';
+import { Channel as PtyChannel, ReadyState } from '@kui-shell/plugin-bash-like/pty/channel';
+import * as EventEmitter from 'events';
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -42,7 +47,9 @@ class KuiPanel {
 	
 	private readonly _panel: vscode.WebviewPanel;
 	private readonly _extensionPath: string;
-	private _disposables: vscode.Disposable[] = [];	
+	private _disposables: vscode.Disposable[] = [];
+
+	private _ptyChannels: WebViewChannelServerSide[] = [];
 	
 	public static createOrShow(extensionPath: string) {
 		const column = vscode.window.activeTextEditor
@@ -114,27 +121,47 @@ class KuiPanel {
 				vscode.setState({});
 			}
 
+			const ptyChannels = []
 			let cbCount = 1;
 			const callbacks = {};
 			window.addEventListener('message', (event) => {
 				console.log('message', event)
 				const message = event.data
 				
-				if (message && message.cbCount) {
+				if (message && message.asyncReply) {
+					console.log('sending async reply', message.channelId);
+					ptyChannels[message.channelId].emit('message', message.body);
+				} else if (message && message.cbCount) {
 					console.log('callback', message);
 					const cb = callbacks[message.cbCount];
 					delete callbacks[message.cbCount];
-					delete message.cbCount
-					cb(message)
+					delete message.cbCount;
+					cb(message);
+					callbacks[message.cbCount] = undefined;
 				} else {
 					console.error('unknown event', message)
 				}
 			});
-			
+
 			window['webview-proxy'] = body => new Promise(resolve => {
+				if (body.provider === 'pty') {
+					if (body.command === 'init') {
+						const channelId = ptyChannels.length;
+						ptyChannels.push(body.channel);
+						delete body.channel;
+						body.channelId = channelId;
+					} else {
+						// async
+						console.log('posting send to vscode', body)
+						vscode.postMessage(body);
+						resolve();
+						return;
+					}
+				}
+				
 				callbacks[cbCount] = resolve;
 				vscode.postMessage(Object.assign({}, body, { cbCount }));
-				cbCount++
+				cbCount++;
 			})
 			
 			console.log('so good', vscode);
@@ -198,13 +225,37 @@ class KuiPanel {
 		// Handle messages from the webview
 		this._panel.webview.onDidReceiveMessage(
 			message => {
-				if (message.cbCount) {
+				if (message.provider === 'pty') {
+					if (message.command === 'init') {
+						this.initPtyChannel(message.cbCount, message.channelId);
+					} else {
+						this.sendPtyChannel(message);
+					}
+				} else if (message.cbCount) {
 					this.kuiExec(message);
 				}
 			},
 			null,
 			this._disposables
 		);
+	}
+	
+	async sendPtyChannel({ channelId, body }: { channelId: number, body: string}) {
+		console.log('sendPtyChannel', channelId, this._ptyChannels[channelId]);
+		const channel = this._ptyChannels[channelId];
+		channel.emit('message', body);
+	}
+	
+	async initPtyChannel(cbCount: number, channelId: number) {
+		console.log('initPtyChannel', cbCount, channelId);
+		const webview = this._panel.webview;
+
+		const channel = new WebViewChannelServerSide(webview, channelId);
+		this._ptyChannels.push(channel);
+		await onConnection(await disableBashSessions())(channel);
+
+		const body = { channelId };
+		webview.postMessage({ statusCode: 200, body, cbCount });
 	}
 	
 	async kuiExec({ command, execOptions, cbCount}: { command: string, execOptions: any, cbCount: number }) {
@@ -249,3 +300,30 @@ function getNonce() {
 
 // this method is called when your extension is deactivated
 export function deactivate() {}
+
+/**
+ * Channel impl
+ *
+ */
+ class WebViewChannelServerSide extends EventEmitter implements PtyChannel {
+	readyState = ReadyState.OPEN;
+	
+	readonly webview: vscode.Webview;
+	readonly channelId: number;
+  
+	constructor (webview: vscode.Webview, channelId: number) {
+	  super();
+	  this.webview = webview;
+	  this.channelId = channelId;
+	}
+  
+	/** emit 'message' on the other side */
+	send (body: string) {
+	  console.log(`sending back from WVCSS ${body}`);
+	  this.webview.postMessage({ asyncReply: true, channelId: this.channelId, body });
+	}
+  
+	removeEventListener (eventType: string, handler: any) {
+	  this.off(eventType, handler);
+	}
+  }
